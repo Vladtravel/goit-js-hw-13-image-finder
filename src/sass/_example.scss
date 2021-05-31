@@ -1,0 +1,42 @@
+:root {
+  --timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body {
+  margin: 100px;
+  font-size: 30px;
+}
+
+.input {
+  display: flex;
+  padding: 20px;
+  margin-bottom: 20px;
+  //margin-left: 40%;
+  width: 500px;
+  height: 50px;
+  border: 2px solid #ff8c00;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.img {
+  float: right;
+  margin-right: 30px;
+}
+
+.title {
+  text-align: center;
+  font-size: 50px;
+}
+
+.capital,
+.languages,
+.pop {
+  font-weight: bold;
+}
+
+.text {
+  font-weight: normal;
+}
