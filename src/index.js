@@ -30,7 +30,6 @@ function renderImage(image) {
     const btnLoad = document.querySelector('.btn-load');
     btnLoad.classList.replace('btn-load', 'btn-load-visible');
     btnLoad.addEventListener('click', onBtnLoad);
-    console.log(image.total);
   }
 
   imageContainer.insertAdjacentHTML('beforeend', imageTpl(image.hits));
@@ -71,10 +70,11 @@ function onInputChange(image) {
     imageContainer.innerHTML = '';
     const btnLoad = document.querySelector('.btn-load-visible');
     btnLoad.classList.replace('btn-load-visible', 'btn-load');
-  } else if (image.total <= 12 || searchQuery !== '') {
-    const btnLoad = document.querySelector('.btn-load-visible');
+  } else if (image.total <= 12) {
     btnLoad.classList.replace('btn-load-visible', 'btn-load');
   }
 
   pageNumber = 1;
 }
+
+//  || searchQuery !== ''
