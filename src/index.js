@@ -69,9 +69,9 @@ function onInputChange(image) {
   if (searchQuery === '') {
     page.textContent = 1;
     imageContainer.innerHTML = '';
-  }
-
-  if (image.total <= 12 || searchQuery !== '') {
+    const btnLoad = document.querySelector('.btn-load-visible');
+    btnLoad.classList.replace('btn-load-visible', 'btn-load');
+  } else if (image.total <= 12 || searchQuery !== '') {
     const btnLoad = document.querySelector('.btn-load-visible');
     btnLoad.classList.replace('btn-load-visible', 'btn-load');
   }
