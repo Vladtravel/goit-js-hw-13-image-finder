@@ -79,12 +79,10 @@ function onInputChange(image) {
     imageContainer.innerHTML = '';
   }
 
-  if (searchQuery !== '') {
-    return;
-  }
-
   if (image.total <= 12 || searchQuery === '') {
     const btnLoad = document.querySelector('.btn-load-visible');
     btnLoad.classList.replace('btn-load-visible', 'btn-load');
   }
+
+  pageNumber = 1;
 }
