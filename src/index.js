@@ -3,13 +3,10 @@ import imageTpl from './tamplates/image.hbs';
 import API from './apiService';
 
 const imageContainer = document.querySelector('.js-image');
-const box = document.querySelector('.js-box');
+// const box = document.querySelector('.js-box');
 const input = document.querySelector('.js-input');
 const form = document.querySelector('.search-form');
 const page = document.querySelector('.page-number');
-
-let searchQuery = input.value;
-searchQuery = searchQuery.trim();
 
 let pageNumber = 1;
 
@@ -36,11 +33,11 @@ function renderImage(image) {
     btnLoad.addEventListener('click', onBtnLoad);
     console.log(image.total);
   }
-  if (image.total <= 12) {
-    const btnLoad = document.querySelector('.btn-load-visible');
-    btnLoad.classList.replace('btn-load-visible', 'btn-load');
-    console.log(image.total);
-  }
+  // if (image.total <= 12) {
+  //   const btnLoad = document.querySelector('.btn-load-visible');
+  //   btnLoad.classList.replace('btn-load-visible', 'btn-load');
+  //   console.log(image.total);
+  // }
   imageContainer.insertAdjacentHTML('beforeend', imageTpl(image.hits));
 }
 
@@ -79,7 +76,7 @@ function onInputChange(image) {
     imageContainer.innerHTML = '';
   }
 
-  if (image.total <= 12 || searchQuery === '') {
+  if (image.total <= 12 || searchQuery !== '') {
     const btnLoad = document.querySelector('.btn-load-visible');
     btnLoad.classList.replace('btn-load-visible', 'btn-load');
   }
