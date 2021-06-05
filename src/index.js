@@ -3,7 +3,6 @@ import imageTpl from './tamplates/image.hbs';
 import API from './apiService';
 
 const imageContainer = document.querySelector('.js-image');
-// const box = document.querySelector('.js-box');
 const input = document.querySelector('.js-input');
 const form = document.querySelector('.search-form');
 const page = document.querySelector('.page-number');
