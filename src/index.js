@@ -32,11 +32,7 @@ function renderImage(image) {
     btnLoad.addEventListener('click', onBtnLoad);
     console.log(image.total);
   }
-  // if (image.total <= 12) {
-  //   const btnLoad = document.querySelector('.btn-load-visible');
-  //   btnLoad.classList.replace('btn-load-visible', 'btn-load');
-  //   console.log(image.total);
-  // }
+
   imageContainer.insertAdjacentHTML('beforeend', imageTpl(image.hits));
 }
 
