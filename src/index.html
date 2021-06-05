@@ -19,12 +19,29 @@
       integrity="sha512-ISS7cAi1PEhQ8jnbJpJZMd29NlhNj4AWYyLOSp2CE/CsHxTCu+r+t0D2yoJudVrd0/8fTVPUVDzY5Tvli75u/g=="
       crossorigin="anonymous"
     />
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
   </head>
   <body>
-    <input class="js-input input" type="text" name="input" value="" />
-    <div class="js-country"></div>
+    <div class="box js-box">
+      <p class="page">Page:<span class="page-number">1</span></p>
+
+      <form class="search-form" id="search-form">
+        <input
+          class="js-input input"
+          type="text"
+          name="query"
+          autocomplete="off"
+          placeholder="Search images..."
+        />
+        <button class="btn-submit js-btn" type="submit">submit</button>
+        <button class="btn-load" type="button">load more</button>
+      </form>
+    </div>
+
+    <div class="js-image"></div>
 
     <script src="./index.js"></script>
-    <script src="./fetchCountries.js"></script>
+    <script src="./apiService.js"></script>
   </body>
 </html>

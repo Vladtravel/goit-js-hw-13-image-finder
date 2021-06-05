@@ -1,39 +1,90 @@
 import './sass/main.scss';
-import countryTpl from './tamplates/country.hbs';
-import countryList from './tamplates/countrylist.hbs';
-import API from './fetchCountries';
-import debounce from 'lodash.debounce';
-import { error, defaultModules } from '../node_modules/@pnotify/core/dist/PNotify.js';
-import * as PNotifyMobile from '../node_modules/@pnotify/mobile/dist/PNotifyMobile.js';
+import imageTpl from './tamplates/image.hbs';
+import API from './apiService';
 
-defaultModules.set(PNotifyMobile, {});
+const imageContainer = document.querySelector('.js-image');
+const box = document.querySelector('.js-box');
+const input = document.querySelector('.js-input');
+const form = document.querySelector('.search-form');
+const page = document.querySelector('.page-number');
 
-const countryContainer = document.querySelector('.js-country');
-const inputCountry = document.querySelector('.js-input');
+let searchQuery = input.value;
+searchQuery = searchQuery.trim();
 
-inputCountry.addEventListener('input', debounce(onSearch, 500));
+let pageNumber = 1;
+
+form.addEventListener('submit', onSearch);
+input.addEventListener('input', onInputChange);
 
 function onSearch(e) {
-  let searchQuery = e.target.value;
+  e.preventDefault();
+
+  let searchQuery = input.value;
   searchQuery = searchQuery.trim();
 
   if (searchQuery !== '') {
-    API.fetchCountries(searchQuery)
-      .then(renderCountry)
+    API.fetchImages(searchQuery, pageNumber)
+      .then(renderImage)
       .catch(error => console.log('error'));
   }
 }
 
-function renderCountry(country) {
-  if (country.length === 1) {
-    const markup = countryTpl(country);
-    countryContainer.innerHTML = markup;
-  } else if (country.length >= 2 && country.length <= 10) {
-    const markup = countryList(country);
-    countryContainer.innerHTML = markup;
-  } else if (country.length > 10) {
-    error({
-      text: 'Слишком много совпадений. Детализируйте пожалуйста запрос',
-    });
+function renderImage(image) {
+  if (image.total > 12) {
+    const btnLoad = document.querySelector('.btn-load');
+    btnLoad.classList.replace('btn-load', 'btn-load-visible');
+    btnLoad.addEventListener('click', onBtnLoad);
+    console.log(image.total);
+  }
+  if (image.total <= 12) {
+    const btnLoad = document.querySelector('.btn-load-visible');
+    btnLoad.classList.replace('btn-load-visible', 'btn-load');
+    console.log(image.total);
+  }
+  imageContainer.insertAdjacentHTML('beforeend', imageTpl(image.hits));
+}
+
+function onBtnLoad(e) {
+  page.textContent = pageNumber;
+  let sum = Number(page.textContent);
+  sum += 1;
+  page.textContent = sum;
+  pageNumber = sum;
+  let searchQuery = input.value;
+  searchQuery = searchQuery.trim();
+
+  if (searchQuery !== '') {
+    API.fetchImages(searchQuery, pageNumber)
+      .then(renderMoreImage)
+      .catch(error => console.log('error'));
+  }
+}
+
+function renderMoreImage(image) {
+  imageContainer.insertAdjacentHTML('beforeend', imageTpl(image.hits));
+
+  const element = imageContainer.lastChild.firstElementChild;
+  element.scrollIntoView({
+    behavior: 'smooth',
+    block: 'end',
+  });
+}
+
+function onInputChange(image) {
+  let searchQuery = input.value;
+  searchQuery = searchQuery.trim();
+
+  if (searchQuery === '') {
+    page.textContent = 1;
+    imageContainer.innerHTML = '';
+  }
+
+  if (searchQuery !== '') {
+    return;
+  }
+
+  if (image.total <= 12 || searchQuery === '') {
+    const btnLoad = document.querySelector('.btn-load-visible');
+    btnLoad.classList.replace('btn-load-visible', 'btn-load');
   }
 }
