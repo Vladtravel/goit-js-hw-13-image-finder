@@ -34,12 +34,6 @@ function onBtnLoad(e) {
 
   refs.page.textContent = ApiService.PageQuery;
   console.dir(refs.imageContainer);
-
-  const element = refs.imageContainer.lastElementChild.lastElementChild;
-  element.scrollIntoView({
-    behavior: 'smooth',
-    block: 'end',
-  });
 }
 
 function imageMarkup(data) {
@@ -47,6 +41,12 @@ function imageMarkup(data) {
   if (data.total > 12) {
     refs.btnLoad.classList.replace('btn-load', 'btn-load-visible');
   }
+
+  const element = refs.imageContainer.lastElementChild.firstElementChild;
+  element.scrollIntoView({
+    behavior: 'smooth',
+    block: 'end',
+  });
 }
 
 function clearImageContainer() {
