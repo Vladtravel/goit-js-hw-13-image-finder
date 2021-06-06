@@ -14,7 +14,6 @@ body {
 }
 
 .gallery {
-  margin-top: 200px;
   display: grid;
   width: 1200px;
   grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
@@ -23,6 +22,10 @@ body {
   list-style: none;
   margin-left: auto;
   margin-right: auto;
+
+  &:first-child {
+    margin-top: 200px;
+  }
 }
 
 .btn-submit {

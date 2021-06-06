@@ -1,80 +1,62 @@
 import './sass/main.scss';
 import imageTpl from './tamplates/image.hbs';
-import API from './apiService';
+import NewApiService from './apiService';
 
-const imageContainer = document.querySelector('.js-image');
-const input = document.querySelector('.js-input');
-const form = document.querySelector('.search-form');
-const page = document.querySelector('.page-number');
+const refs = {
+  form: document.querySelector('.search-form'),
+  imageContainer: document.querySelector('.js-image'),
+  btnLoad: document.querySelector('.btn-load'),
+  page: document.querySelector('.page-number'),
+};
 
-let pageNumber = 1;
+const ApiService = new NewApiService();
 
-form.addEventListener('submit', onSearch);
-input.addEventListener('input', onInputChange);
+refs.form.addEventListener('submit', onSearch);
+refs.btnLoad.addEventListener('click', onBtnLoad);
+refs.form.addEventListener('input', onInputChange);
 
 function onSearch(e) {
   e.preventDefault();
 
-  let searchQuery = input.value;
-  searchQuery = searchQuery.trim();
+  ApiService.query = e.currentTarget.elements.query.value;
+  ApiService.resetPage();
+  refs.page.textContent = ApiService.PageQuery;
 
-  if (searchQuery !== '') {
-    API.fetchImages(searchQuery, pageNumber)
-      .then(renderImage)
-      .catch(error => console.log('error'));
+  if (ApiService.query.trim() !== '') {
+    ApiService.fetchImages().then(imageMarkup);
+
+    refs.imageContainer.innerHTML = '';
   }
-}
-
-function renderImage(image) {
-  if (image.total > 12) {
-    const btnLoad = document.querySelector('.btn-load');
-    btnLoad.classList.replace('btn-load', 'btn-load-visible');
-    btnLoad.addEventListener('click', onBtnLoad);
-  }
-
-  imageContainer.insertAdjacentHTML('beforeend', imageTpl(image.hits));
 }
 
 function onBtnLoad(e) {
-  page.textContent = pageNumber;
-  let sum = Number(page.textContent);
-  sum += 1;
-  page.textContent = sum;
-  pageNumber = sum;
-  let searchQuery = input.value;
-  searchQuery = searchQuery.trim();
+  ApiService.fetchImages().then(imageMarkup);
 
-  if (searchQuery !== '') {
-    API.fetchImages(searchQuery, pageNumber)
-      .then(renderMoreImage)
-      .catch(error => console.log('error'));
-  }
-}
+  refs.page.textContent = ApiService.PageQuery;
+  console.dir(refs.imageContainer);
 
-function renderMoreImage(image) {
-  imageContainer.insertAdjacentHTML('beforeend', imageTpl(image.hits));
-
-  const element = imageContainer.lastChild.firstElementChild;
+  const element = refs.imageContainer.lastElementChild.lastElementChild;
   element.scrollIntoView({
     behavior: 'smooth',
     block: 'end',
   });
 }
 
-function onInputChange(image) {
-  let searchQuery = input.value;
-  searchQuery = searchQuery.trim();
-
-  if (searchQuery === '') {
-    page.textContent = 1;
-    imageContainer.innerHTML = '';
-    const btnLoad = document.querySelector('.btn-load-visible');
-    btnLoad.classList.replace('btn-load-visible', 'btn-load');
-  } else if (image.total <= 12) {
-    btnLoad.classList.replace('btn-load-visible', 'btn-load');
+function imageMarkup(data) {
+  refs.imageContainer.insertAdjacentHTML('beforeend', imageTpl(data.hits));
+  if (data.total > 12) {
+    refs.btnLoad.classList.replace('btn-load', 'btn-load-visible');
   }
-
-  pageNumber = 1;
 }
 
-//  || searchQuery !== ''
+function clearImageContainer() {
+  refs.imageContainer.innerHTML = '';
+}
+
+function onInputChange(e) {
+  if (e.currentTarget.elements.query.value === '') {
+    refs.btnLoad.classList.replace('btn-load-visible', 'btn-load');
+    ApiService.resetPage();
+    refs.page.textContent = ApiService.PageQuery;
+  }
+}
