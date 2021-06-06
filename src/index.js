@@ -1,6 +1,14 @@
 import './sass/main.scss';
 import imageTpl from './tamplates/image.hbs';
 import NewApiService from './apiService';
+import { success, error, defaultModules } from '../node_modules/@pnotify/core/dist/PNotify.js';
+import * as PNotifyMobile from '../node_modules/@pnotify/mobile/dist/PNotifyMobile.js';
+
+defaultModules.set(PNotifyMobile, {});
+
+// const mySuccess = success({
+//   text: 'Успешно!',
+// });
 
 const refs = {
   form: document.querySelector('.search-form'),
@@ -23,7 +31,13 @@ function onSearch(e) {
   refs.page.textContent = ApiService.PageQuery;
 
   if (ApiService.query.trim() !== '') {
-    ApiService.fetchImages().then(imageMarkup);
+    ApiService.fetchImages()
+      .then(imageMarkup)
+      .catch(er =>
+        error({
+          text: 'Неверные параметры поиска!',
+        }),
+      );
 
     refs.imageContainer.innerHTML = '';
   }
@@ -38,6 +52,7 @@ function onBtnLoad(e) {
 
 function imageMarkup(data) {
   refs.imageContainer.insertAdjacentHTML('beforeend', imageTpl(data.hits));
+
   if (data.total > 12) {
     refs.btnLoad.classList.replace('btn-load', 'btn-load-visible');
   }
