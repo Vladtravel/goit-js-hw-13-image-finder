@@ -33,6 +33,11 @@ function onSearch(e) {
   if (ApiService.query.trim() !== '') {
     ApiService.fetchImages()
       .then(imageMarkup)
+      .then(er =>
+        success({
+          text: 'Успешно!',
+        }),
+      )
       .catch(er =>
         error({
           text: 'Неверные параметры поиска!',
