@@ -6,10 +6,6 @@ import * as PNotifyMobile from '../node_modules/@pnotify/mobile/dist/PNotifyMobi
 
 defaultModules.set(PNotifyMobile, {});
 
-// const mySuccess = success({
-//   text: 'Успешно!',
-// });
-
 const refs = {
   form: document.querySelector('.search-form'),
   imageContainer: document.querySelector('.js-image'),
@@ -48,11 +44,10 @@ function onSearch(e) {
   }
 }
 
-function onBtnLoad(e) {
+function onBtnLoad() {
   ApiService.fetchImages().then(imageMarkup);
 
   refs.page.textContent = ApiService.PageQuery;
-  console.dir(refs.imageContainer);
 }
 
 function imageMarkup(data) {
@@ -69,9 +64,9 @@ function imageMarkup(data) {
   });
 }
 
-function clearImageContainer() {
-  refs.imageContainer.innerHTML = '';
-}
+// function clearImageContainer() {
+//   refs.imageContainer.innerHTML = '';
+// }
 
 function onInputChange(e) {
   if (e.currentTarget.elements.query.value === '') {
